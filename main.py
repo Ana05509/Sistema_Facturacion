@@ -1,5 +1,7 @@
-import wx
-from crear_form import CrearProducto
+from crear_cliente_form import CrearClienteForm
+import crear_factura_form
+import wx # type: ignore
+from crear_form import CrearProducto, CrearProductoForm
 from listar_form import ListarProductos
 from actualizar_form import ActualizarProducto
 from db import inicializar_base_datos
@@ -37,4 +39,32 @@ if __name__ == "__main__":
     app = wx.App()
     frame = SistemaVentas(None)
     frame.Show()
+    app.MainLoop()
+
+class MainMenu(wx.Frame):
+    def __init__(self):
+        super().__init__(None, title="Sistema de Facturación", size=(400, 300))
+        panel = wx.Panel(self)
+        
+        registrar_producto_btn = wx.Button(panel, label="Registrar Producto", pos=(100, 50))
+        registrar_producto_btn.Bind(wx.EVT_BUTTON, self.abrir_registrar_producto)
+        
+        registrar_cliente_btn = wx.Button(panel, label="Registrar Cliente", pos=(100, 100))
+        registrar_cliente_btn.Bind(wx.EVT_BUTTON, self.abrir_registrar_cliente)
+        
+        generar_factura_btn = wx.Button(panel, label="Generar Factura", pos=(100, 150))
+        generar_factura_btn.Bind(wx.EVT_BUTTON, self.abrir_generar_factura)
+    
+    def abrir_registrar_producto(self, event):
+        CrearProductoForm(self).Show()
+    
+    def abrir_registrar_cliente(self, event):
+        CrearClienteForm(self).Show()
+    
+    def abrir_generar_factura(self, event):
+        crear_factura_form(self).Show()
+
+if __name__ == "__main__":
+    app = wx.App()
+    MainMenu().Show()
     app.MainLoop()
